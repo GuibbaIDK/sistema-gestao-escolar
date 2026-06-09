@@ -72,3 +72,21 @@
 ## Finalização
 - [x] Revisar toda a aplicação
 - [x] Criar checkpoint final
+
+
+## Correção de Design e Cadastro Local
+
+### Design
+- [x] Corrigir bugs visuais (layout, espaçamento, cores, tipografia)
+- [x] Revisar responsividade em mobile
+- [x] Ajustar elementos CAD e grade
+
+### Autenticação Local (sem OAuth)
+- [x] Estender schema: adicionar campos password_hash e email_verified na tabela users
+- [x] Criar procedures tRPC para registro (email/senha)
+- [x] Criar procedures tRPC para login (email/senha)
+- [x] Implementar hash de senha com bcrypt
+- [x] Criar página de registro
+- [x] Criar página de login
+- [x] Remover OAuth do fluxo
+- [x] Testar fluxos de registro, login e logout

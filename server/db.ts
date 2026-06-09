@@ -262,3 +262,37 @@ export async function updateUserRole(id: number, role: "user" | "admin") {
   const result = await db.update(users).set({ role }).where(eq(users.id, id));
   return result;
 }
+
+
+// ============ AUTENTICAÇÃO LOCAL ============
+
+export async function getUserByEmail(email: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+
+  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createLocalUser(email: string, name: string, passwordHash: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.insert(users).values({
+    email,
+    name,
+    passwordHash,
+    loginMethod: "local",
+    role: "user",
+    lastSignedIn: new Date(),
+  });
+  return result;
+}
+
+export async function updateUserLastSignedIn(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.update(users).set({ lastSignedIn: new Date() }).where(eq(users.id, id));
+  return result;
+}

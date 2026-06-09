@@ -52,12 +52,12 @@ export default function Home() {
               Sobre
             </a>
             <Button asChild variant="default" size="sm">
-              <a href={getLoginUrl()}>Entrar</a>
+              <a href="/login">Entrar</a>
             </Button>
           </nav>
           <div className="md:hidden">
             <Button asChild variant="default" size="sm">
-              <a href={getLoginUrl()}>Entrar</a>
+              <a href="/login">Entrar</a>
             </Button>
           </div>
         </div>
@@ -77,7 +77,7 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button asChild size="lg" className="bg-accent hover:bg-accent/90">
-                  <a href={getLoginUrl()}>
+                  <a href="/login">
                     Começar Agora
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </a>
@@ -207,7 +207,7 @@ export default function Home() {
             Acesse o sistema com sua conta e explore todas as funcionalidades de gestão escolar.
           </p>
           <Button asChild size="lg" className="bg-accent hover:bg-accent/90">
-            <a href={getLoginUrl()}>
+            <a href="/login">
               Fazer Login Agora
               <ArrowRight className="ml-2 w-4 h-4" />
             </a>

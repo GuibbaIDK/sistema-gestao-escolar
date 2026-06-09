@@ -541,14 +541,14 @@ function AdminAlunosTab() {
 // ============ USUÁRIOS TAB ============
 
 function AdminUsuariosTab() {
-  const { data: usuarios, refetch } = trpc.usuarios.list.useQuery();
+  const { data: usuarios, refetch } = trpc.users.list.useQuery();
 
-  const updateRoleMutation = trpc.usuarios.updateRole.useMutation({
+  const updateRoleMutation = trpc.users.updateRole.useMutation({
     onSuccess: () => {
       toast.success("Permissão atualizada com sucesso!");
       refetch();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(`Erro: ${error.message}`);
     },
   });

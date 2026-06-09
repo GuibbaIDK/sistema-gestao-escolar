@@ -116,11 +116,11 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Grade técnica de fundo (planta arquitetônica) */
+    /* Grade técnica de fundo (planta arquitetônica) - mais sutil */
     background-image: 
-      linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent),
-      linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
-    background-size: 40px 40px;
+      linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02) 76%, transparent 77%, transparent),
+      linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
   }
   h1,
   h2,
@@ -135,7 +135,8 @@
 
 @layer components {
   .container {
-    @apply mx-auto;
+    margin-left: auto;
+    margin-right: auto;
     max-width: 80rem;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -155,45 +156,44 @@
 
   /* Elementos CAD lineares */
   .cad-frame {
-    @apply border-2;
-    border-color: white;
+    border: 2px solid white;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   }
 
   .cad-dimension {
-    @apply relative;
+    position: relative;
   }
 
   .cad-dimension::before,
   .cad-dimension::after {
     content: '';
-    @apply absolute;
+    position: absolute;
     background-color: white;
   }
 
   .cad-dimension::before {
-    @apply w-full;
+    width: 100%;
     height: 2px;
     top: 0;
   }
 
   .cad-dimension::after {
-    @apply h-full;
+    height: 100%;
     width: 2px;
     left: 0;
   }
 
   /* Molduras retangulares técnicas */
   .tech-box {
-    @apply border relative;
-    border-color: white;
+    border: 1px solid white;
+    position: relative;
     padding: 1rem;
     background: linear-gradient(135deg, rgba(0, 82, 204, 0.1) 0%, rgba(19, 42, 74, 0.1) 100%);
   }
 
   .tech-box::before {
     content: '';
-    @apply absolute;
+    position: absolute;
     width: 0.5rem;
     height: 0.5rem;
     top: 0.5rem;
@@ -204,7 +204,7 @@
 
   .tech-box::after {
     content: '';
-    @apply absolute;
+    position: absolute;
     width: 0.5rem;
     height: 0.5rem;
     bottom: 0.5rem;

@@ -5,6 +5,8 @@ import { publicProcedure, router, adminProcedure, protectedProcedure } from "./_
 import { z } from "zod";
 import * as db from "./db";
 import { TRPCError } from "@trpc/server";
+import * as bcrypt from "bcrypt";
+import { SignJWT } from "jose";
 
 export const appRouter = router({
   system: systemRouter,
@@ -17,6 +19,108 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+
+    // Registro local
+    register: publicProcedure
+      .input(
+        z.object({
+          email: z.string().email(),
+          name: z.string().min(1),
+          password: z.string().min(6),
+        })
+      )
+      .mutation(async ({ input }) => {
+        // Verificar se email já existe
+        const existingUser = await db.getUserByEmail(input.email);
+        if (existingUser) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "Email já cadastrado",
+          });
+        }
+
+        // Hash da senha
+        const passwordHash = await bcrypt.hash(input.password, 10);
+
+        // Criar usuário
+        const result = await db.createLocalUser(input.email, input.name, passwordHash);
+
+        // Buscar usuário criado
+        const user = await db.getUserByEmail(input.email);
+        if (!user) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Erro ao criar usuário",
+          });
+        }
+
+        return {
+          success: true,
+          user: {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          },
+        };
+      }),
+
+    // Login local
+    login: publicProcedure
+      .input(
+        z.object({
+          email: z.string().email(),
+          password: z.string(),
+        })
+      )
+      .mutation(async ({ input, ctx }) => {
+        // Buscar usuário
+        const user = await db.getUserByEmail(input.email);
+        if (!user || !user.passwordHash) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Email ou senha inválidos",
+          });
+        }
+
+        // Verificar senha
+        const isPasswordValid = await bcrypt.compare(input.password, user.passwordHash);
+        if (!isPasswordValid) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Email ou senha inválidos",
+          });
+        }
+
+        // Atualizar lastSignedIn
+        await db.updateUserLastSignedIn(user.id);
+
+        // Criar JWT
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET || "secret");
+        const token = await new SignJWT({
+          userId: user.id,
+          email: user.email,
+          role: user.role,
+        })
+          .setProtectedHeader({ alg: "HS256" })
+          .setExpirationTime("7d")
+          .sign(secret);
+
+        // Setar cookie
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        const cookieValue = `${COOKIE_NAME}=${token}; Path=/; ${cookieOptions.secure ? "Secure; " : ""}${cookieOptions.sameSite ? `SameSite=${cookieOptions.sameSite}; ` : ""}HttpOnly; Max-Age=604800`;
+        ctx.res.setHeader("Set-Cookie", cookieValue);
+
+        return {
+          success: true,
+          user: {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          },
+        };
+      }),
   }),
 
   // ============ TURMAS ============
@@ -74,9 +178,9 @@ export const appRouter = router({
       .input(
         z.object({
           id: z.number(),
-          nome: z.string().min(1).optional(),
-          ano: z.string().min(1).optional(),
-          turno: z.string().min(1).optional(),
+          nome: z.string().optional(),
+          ano: z.string().optional(),
+          turno: z.string().optional(),
           descricao: z.string().optional(),
         })
       )
@@ -97,7 +201,7 @@ export const appRouter = router({
 
   // ============ ALUNOS ============
   alunos: router({
-    // Listar alunos (público com paginação, busca e filtro por turma)
+    // Listar alunos (público com paginação e busca)
     list: publicProcedure
       .input(
         z.object({
@@ -152,8 +256,8 @@ export const appRouter = router({
       .input(
         z.object({
           id: z.number(),
-          nome: z.string().min(1).optional(),
-          matricula: z.string().min(1).optional(),
+          nome: z.string().optional(),
+          matricula: z.string().optional(),
           turmaId: z.number().optional(),
           email: z.string().email().optional(),
           telefone: z.string().optional(),
@@ -175,11 +279,10 @@ export const appRouter = router({
   }),
 
   // ============ USUÁRIOS ============
-  usuarios: router({
-    // Listar todos os usuários (admin only)
+  users: router({
+    // Listar usuários (admin only)
     list: adminProcedure.query(async () => {
-      const users = await db.getAllUsers();
-      return users;
+      return await db.getAllUsers();
     }),
 
     // Promover/rebaixar usuário (admin only)

@@ -8,11 +8,15 @@ import Home from "./pages/Home";
 import TurmasPublic from "./pages/TurmasPublic";
 import TurmaDetail from "./pages/TurmaDetail";
 import AdminDashboard from "./pages/AdminDashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/login"} component={Login} />
+      <Route path={"/register"} component={Register} />
       <Route path={"/turmas"} component={TurmasPublic} />
       <Route path={"/turmas/:id"} component={TurmaDetail} />
       <Route path={"/admin/turmas"} component={AdminDashboard} />
