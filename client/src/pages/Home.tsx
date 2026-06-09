@@ -2,11 +2,23 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { getLoginUrl } from "@/const";
 import { useLocation } from "wouter";
+import { useEffect } from "react";
 import { ArrowRight, Users, BookOpen, Shield } from "lucide-react";
 
 export default function Home() {
   const { user, isAuthenticated, loading } = useAuth();
   const [, setLocation] = useLocation();
+
+  // Usar useEffect para redirecionar após render, não durante render
+  useEffect(() => {
+    if (!loading && isAuthenticated && user) {
+      if (user.role === "admin") {
+        setLocation("/admin/turmas");
+      } else {
+        setLocation("/turmas");
+      }
+    }
+  }, [isAuthenticated, user, loading, setLocation]);
 
   if (loading) {
     return (
@@ -16,13 +28,8 @@ export default function Home() {
     );
   }
 
-  // Se autenticado, redireciona para dashboard
+  // Se autenticado, redireciona para dashboard (useEffect já cuidará disso)
   if (isAuthenticated && user) {
-    if (user.role === "admin") {
-      setLocation("/admin/turmas");
-    } else {
-      setLocation("/turmas");
-    }
     return null;
   }
 
