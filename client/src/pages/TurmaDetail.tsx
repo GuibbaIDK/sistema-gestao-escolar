@@ -4,15 +4,23 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, LogOut } from "lucide-react";
+import { useAuth } from "@/_core/hooks/useAuth";
 
 export default function TurmaDetail() {
   const [match, params] = useRoute("/turmas/:id");
   const [, setLocation] = useLocation();
+  const { logout } = useAuth();
   const turmaId = params?.id ? parseInt(params.id) : 0;
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+
+  const logoutMutation = trpc.auth.logout.useMutation({
+    onSuccess: () => {
+      setLocation("/");
+    },
+  });
 
   const { data: turma, isLoading: turmaLoading } = trpc.turmas.getById.useQuery(
     { id: turmaId },
@@ -42,13 +50,24 @@ export default function TurmaDetail() {
             </div>
             <span className="text-technical-lg">DETALHES DA TURMA</span>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setLocation("/turmas")}
-          >
-            Voltar
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setLocation("/turmas")}
+            >
+              Voltar
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Sair
+            </Button>
+          </div>
         </div>
       </header>
 

@@ -4,12 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useLocation } from "wouter";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, LogOut } from "lucide-react";
+import { useAuth } from "@/_core/hooks/useAuth";
 
 export default function TurmasPublic() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [, setLocation] = useLocation();
+  const { logout } = useAuth();
+  const logoutMutation = trpc.auth.logout.useMutation({
+    onSuccess: () => {
+      setLocation("/");
+    },
+  });
 
   const { data: turmasData, isLoading } = trpc.turmas.list.useQuery({
     page,
@@ -32,13 +39,24 @@ export default function TurmasPublic() {
             </div>
             <span className="text-technical-lg">TURMAS</span>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setLocation("/")}
-          >
-            Voltar
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setLocation("/")}
+            >
+              Voltar
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Sair
+            </Button>
+          </div>
         </div>
       </header>
 
