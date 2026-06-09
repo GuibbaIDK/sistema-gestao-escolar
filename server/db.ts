@@ -296,3 +296,11 @@ export async function updateUserLastSignedIn(id: number) {
   const result = await db.update(users).set({ lastSignedIn: new Date() }).where(eq(users.id, id));
   return result;
 }
+
+export async function updateUserOpenId(id: number, openId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.update(users).set({ openId }).where(eq(users.id, id));
+  return result;
+}

@@ -92,15 +92,19 @@ export const appRouter = router({
           });
         }
 
-        // Atualizar lastSignedIn
+        // Atualizar lastSignedIn e openId
+        const openId = user.email || `local_${user.id}`;
         await db.updateUserLastSignedIn(user.id);
+        if (!user.openId) {
+          await db.updateUserOpenId(user.id, openId);
+        }
 
-        // Criar JWT
+        // Criar JWT com campos esperados pelo SDK (openId, appId, name)
         const secret = new TextEncoder().encode(process.env.JWT_SECRET || "secret");
         const token = await new SignJWT({
-          userId: user.id,
-          email: user.email,
-          role: user.role,
+          openId: openId,
+          appId: process.env.VITE_APP_ID || "local-app",
+          name: user.name || user.email || "",
         })
           .setProtectedHeader({ alg: "HS256" })
           .setExpirationTime("7d")
