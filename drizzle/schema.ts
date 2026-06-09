@@ -1,4 +1,5 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, foreignKey } from "drizzle-orm/mysql-core";
+import { relations } from "drizzle-orm";
 
 /**
  * Core user table backing auth flow.
@@ -25,4 +26,60 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+/**
+ * Tabela de Turmas
+ * Armazena as turmas da escola (ex: 3º Ano A, 3º Ano B, etc)
+ */
+export const turmas = mysqlTable("turmas", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 255 }).notNull(),
+  ano: varchar("ano", { length: 4 }).notNull(),
+  turno: varchar("turno", { length: 50 }).notNull(),
+  descricao: text("descricao"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Turma = typeof turmas.$inferSelect;
+export type InsertTurma = typeof turmas.$inferInsert;
+
+/**
+ * Tabela de Alunos
+ * Armazena os alunos e sua vinculação com turmas
+ */
+export const alunos = mysqlTable(
+  "alunos",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    nome: varchar("nome", { length: 255 }).notNull(),
+    matricula: varchar("matricula", { length: 50 }).notNull().unique(),
+    turmaId: int("turmaId").notNull(),
+    email: varchar("email", { length: 320 }),
+    telefone: varchar("telefone", { length: 20 }),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    turmaIdFk: foreignKey({
+      columns: [table.turmaId],
+      foreignColumns: [turmas.id],
+    }).onDelete("cascade"),
+  })
+);
+
+export type Aluno = typeof alunos.$inferSelect;
+export type InsertAluno = typeof alunos.$inferInsert;
+
+/**
+ * Relações entre tabelas
+ */
+export const turmasRelations = relations(turmas, ({ many }) => ({
+  alunos: many(alunos),
+}));
+
+export const alunosRelations = relations(alunos, ({ one }) => ({
+  turma: one(turmas, {
+    fields: [alunos.turmaId],
+    references: [turmas.id],
+  }),
+}));

@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, like, and, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, turmas, alunos } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,176 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ============ TURMAS ============
+
+export async function getTurmas(limit: number = 10, offset: number = 0, searchQuery?: string) {
+  const db = await getDb();
+  if (!db) return [];
+
+  let query = db.select().from(turmas) as any;
+
+  if (searchQuery) {
+    query = query.where(
+      like(turmas.nome, `%${searchQuery}%`)
+    );
+  }
+
+  const result = await query
+    .orderBy(desc(turmas.createdAt))
+    .limit(limit)
+    .offset(offset);
+
+  return result;
+}
+
+export async function getTurmasCount(searchQuery?: string) {
+  const db = await getDb();
+  if (!db) return 0;
+
+  let query = db.select().from(turmas) as any;
+
+  if (searchQuery) {
+    query = query.where(
+      like(turmas.nome, `%${searchQuery}%`)
+    );
+  }
+
+  const result = await query;
+  return result.length;
+}
+
+export async function getTurmaById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+
+  const result = await db.select().from(turmas).where(eq(turmas.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createTurma(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.insert(turmas).values(data);
+  return result;
+}
+
+export async function updateTurma(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.update(turmas).set(data).where(eq(turmas.id, id));
+  return result;
+}
+
+export async function deleteTurma(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.delete(turmas).where(eq(turmas.id, id));
+  return result;
+}
+
+// ============ ALUNOS ============
+
+export async function getAlunos(limit: number = 10, offset: number = 0, searchQuery?: string, turmaId?: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  let conditions: any[] = [];
+
+  if (searchQuery) {
+    conditions.push(like(alunos.nome, `%${searchQuery}%`));
+  }
+
+  if (turmaId) {
+    conditions.push(eq(alunos.turmaId, turmaId));
+  }
+
+  let query = db.select().from(alunos) as any;
+
+  if (conditions.length > 0) {
+    query = query.where(and(...conditions));
+  }
+
+  const result = await query
+    .orderBy(desc(alunos.createdAt))
+    .limit(limit)
+    .offset(offset);
+
+  return result;
+}
+
+export async function getAlunosCount(searchQuery?: string, turmaId?: number) {
+  const db = await getDb();
+  if (!db) return 0;
+
+  let conditions: any[] = [];
+
+  if (searchQuery) {
+    conditions.push(like(alunos.nome, `%${searchQuery}%`));
+  }
+
+  if (turmaId) {
+    conditions.push(eq(alunos.turmaId, turmaId));
+  }
+
+  let query = db.select().from(alunos) as any;
+
+  if (conditions.length > 0) {
+    query = query.where(and(...conditions));
+  }
+
+  const result = await query;
+  return result.length;
+}
+
+export async function getAlunoById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+
+  const result = await db.select().from(alunos).where(eq(alunos.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createAluno(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.insert(alunos).values(data);
+  return result;
+}
+
+export async function updateAluno(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.update(alunos).set(data).where(eq(alunos.id, id));
+  return result;
+}
+
+export async function deleteAluno(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.delete(alunos).where(eq(alunos.id, id));
+  return result;
+}
+
+// ============ USUÁRIOS ============
+
+export async function getAllUsers() {
+  const db = await getDb();
+  if (!db) return [];
+
+  const result = await db.select().from(users).orderBy(desc(users.createdAt));
+  return result;
+}
+
+export async function updateUserRole(id: number, role: "user" | "admin") {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.update(users).set({ role }).where(eq(users.id, id));
+  return result;
+}

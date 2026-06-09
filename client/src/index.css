@@ -1,4 +1,3 @@
-@import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -43,135 +42,216 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  /* Design técnico/profissional: azul royal profundo com branco */
+  --primary: #0052CC;
+  --primary-foreground: #FFFFFF;
+  --sidebar-primary: #003D99;
+  --sidebar-primary-foreground: #FFFFFF;
+  --chart-1: #0052CC;
+  --chart-2: #003D99;
+  --chart-3: #002966;
+  --chart-4: #001A4D;
+  --chart-5: #000D33;
+  --radius: 0.5rem;
+  
+  /* Fundo azul royal profundo */
+  --background: #0B1929;
+  --foreground: #FFFFFF;
+  --card: #132A4A;
+  --card-foreground: #FFFFFF;
+  --popover: #132A4A;
+  --popover-foreground: #FFFFFF;
+  --secondary: #1A3A5C;
+  --secondary-foreground: #E0E8F0;
+  --muted: #1A3A5C;
+  --muted-foreground: #A0B0C0;
+  --accent: #0052CC;
+  --accent-foreground: #FFFFFF;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #1F4A7A;
+  --input: #1A3A5C;
+  --ring: #0052CC;
+  --sidebar: #0B1929;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-accent: #1A3A5C;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #1F4A7A;
+  --sidebar-ring: #0052CC;
 }
 
 .dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  --primary: #0052CC;
+  --primary-foreground: #FFFFFF;
+  --sidebar-primary: #003D99;
+  --sidebar-primary-foreground: #FFFFFF;
+  --background: #0B1929;
+  --foreground: #FFFFFF;
+  --card: #132A4A;
+  --card-foreground: #FFFFFF;
+  --popover: #132A4A;
+  --popover-foreground: #FFFFFF;
+  --secondary: #1A3A5C;
+  --secondary-foreground: #E0E8F0;
+  --muted: #1A3A5C;
+  --muted-foreground: #A0B0C0;
+  --accent: #0052CC;
+  --accent-foreground: #FFFFFF;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #1F4A7A;
+  --input: #1A3A5C;
+  --ring: #0052CC;
+  --sidebar: #0B1929;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-accent: #1A3A5C;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #1F4A7A;
+  --sidebar-ring: #0052CC;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+    /* Grade técnica de fundo (planta arquitetônica) */
+    background-image: 
+      linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent),
+      linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
+    background-size: 40px 40px;
   }
-  button:not(:disabled),
-  [role="button"]:not([aria-disabled="true"]),
-  [type="button"]:not(:disabled),
-  [type="submit"]:not(:disabled),
-  [type="reset"]:not(:disabled),
-  a[href],
-  select:not(:disabled),
-  input[type="checkbox"]:not(:disabled),
-  input[type="radio"]:not(:disabled) {
-    @apply cursor-pointer;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-foreground;
+    font-weight: 900;
   }
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
   .container {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    @apply mx-auto;
+    max-width: 80rem;
+    padding-left: 1rem;
     padding-right: 1rem;
   }
-
-  .flex {
-    min-height: 0;
-    min-width: 0;
-  }
-
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
-
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
     }
+  }
+
+  /* Elementos CAD lineares */
+  .cad-frame {
+    @apply border-2;
+    border-color: white;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .cad-dimension {
+    @apply relative;
+  }
+
+  .cad-dimension::before,
+  .cad-dimension::after {
+    content: '';
+    @apply absolute;
+    background-color: white;
+  }
+
+  .cad-dimension::before {
+    @apply w-full;
+    height: 2px;
+    top: 0;
+  }
+
+  .cad-dimension::after {
+    @apply h-full;
+    width: 2px;
+    left: 0;
+  }
+
+  /* Molduras retangulares técnicas */
+  .tech-box {
+    @apply border relative;
+    border-color: white;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(0, 82, 204, 0.1) 0%, rgba(19, 42, 74, 0.1) 100%);
+  }
+
+  .tech-box::before {
+    content: '';
+    @apply absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    top: 0.5rem;
+    left: 0.5rem;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+  }
+
+  .tech-box::after {
+    content: '';
+    @apply absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+  }
+
+  /* Tipografia bold branca com contraste */
+  .text-technical {
+    color: white;
+    font-weight: 900;
+    letter-spacing: 0.025em;
+  }
+
+  .text-technical-sm {
+    font-size: 0.875rem;
+    color: white;
+    font-weight: 900;
+    letter-spacing: 0.025em;
+  }
+
+  .text-technical-lg {
+    font-size: 1.125rem;
+    color: white;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+  }
+
+  .text-technical-xl {
+    font-size: 1.25rem;
+    color: white;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+  }
+}
+
+@layer utilities {
+  .flex {
+    @apply flex;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .grid {
+    @apply grid;
+    min-width: 0;
+    min-height: 0;
   }
 }
